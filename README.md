@@ -41,7 +41,8 @@ behave
 
 ```shell
 docker build -t translator-testing-framework .
-docker run -it translator-testing-framework args --and params
+# To display print() in console output
+docker run -it translator-testing-framework --no-capture
 ```
 
 
