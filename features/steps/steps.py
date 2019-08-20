@@ -1,6 +1,5 @@
 from behave import *
 from SPARQLWrapper import SPARQLWrapper, JSON, XML, CSV, TSV
-import pandas as pd, io
 import numpy as np
 
 """
@@ -18,6 +17,7 @@ def step_impl(context, graphUri):
 def step_impl(context, entityUri):
     context.entityUri = entityUri
 
+# Run SPARQL to get the value of the required property
 @then('its property "{predicate}" should be "{value}"')
 def step_impl(context, predicate, value):
 
@@ -38,19 +38,19 @@ def step_impl(context, predicate, value):
         }
     }
     """
-
     sparql.setQuery(query % (context.graphUri, context.entityUri, predicate))
     sparql.setReturnFormat(JSON)
 
     results = sparql.query().convert()
     print(results["results"]["bindings"])
     
-    # This loop doesn't work. The result var is empty, even if print shows that results["results"]["bindings"] is a list
+    # This loop doesn't work. Even if print shows that results["results"]["bindings"] is a list
+    # Tried to cast it to Array using numpy np.asarray(myList), but still not working
     # If anyone can find why Python can't do a for loop on an array I would be interested.
-    # We get the first answer directly from array index [0] 
     # See SPARQL example here: https://rdflib.github.io/sparqlwrapper/
     for result in np.asarray(results["results"]["bindings"]):
-        print("we don't get into this loop")
+        print("we don't get into this loop!")
     # for i in range(len(results["results"]["bindings"])):
-    
+
+    # We get the first answer directly from array index because loop won't work
     assert value == results["results"]["bindings"][0]["propertyValue"]["value"]
