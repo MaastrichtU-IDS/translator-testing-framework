@@ -40,6 +40,9 @@ behave
 ## Run with Docker
 
 ```shell
+docker run -it vemonet/translator-testing-framework
+
+# Or build from current repository
 docker build -t translator-testing-framework .
 # To display print() in console output
 docker run -it translator-testing-framework --no-capture
